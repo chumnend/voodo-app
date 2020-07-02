@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div class="app">
     <header>
       <h1>Voodo</h1>
       
@@ -54,6 +54,7 @@ export default{
         console.error(e.response.data.message);
       }
     },
+    
     async login(login, password) {
       try {
         let res = await this.$http.post(`${this.url}/v1/auth/login`, {
@@ -73,6 +74,7 @@ export default{
         console.log(e.response.data.message);
       }
     },
+    
     logout() {
       localStorage.clear();
       this.isAuth = false;
@@ -82,25 +84,4 @@ export default{
 };
 </script>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-
-#nav {
-  padding: 30px;
-}
-
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-#nav a.router-link-exact-active {
-  color: #42b983;
-}
-</style>
+<style scoped></style>

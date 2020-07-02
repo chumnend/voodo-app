@@ -11,7 +11,7 @@ Vue.use(VueRouter);
 const routes = [
   {
     path: '/',
-    name: 'Todo',
+    name: 'todo',
     component: Todo,
     meta: {
       requiresAuth: true,
@@ -19,7 +19,7 @@ const routes = [
   },
   {
     path: '/register',
-    name: 'Register',
+    name: 'register',
     component: Register,
     meta: {
       guest: true,
@@ -27,7 +27,7 @@ const routes = [
   },
   {
     path: '/login',
-    name: 'Login',
+    name: 'login',
     component: Login,
     meta: {
       guest: true,
