@@ -1,4 +1,5 @@
 # Voodo
+A simple Todo application, build using Vue.js
 
 ## Project setup
 ```

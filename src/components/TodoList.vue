@@ -1,17 +1,19 @@
 <template>
   <div class="todo-list">
-    <div class="title-bar" v-if="!editing">
-      <span>{{ title }}</span>
-      <button @click="toggleEdit">Edit</button>
-      <button @click="handleDelete">Delete</button>
-    </div>
-    <div class="edit-bar" v-else>
+    <header v-if="!editing">
+      <p>{{ title }}</p>
+      <button @click="toggleEdit"><i class="fas fa-edit"></i></button>
+      <button @click="handleDelete"><i class="fas fa-trash"></i></button>
+    </header>
+    <header v-else>
       <input type="text" v-model="editedTitle"/>
-      <button @click="handleUpdate">Submit</button>
-      <button @click="toggleEdit">Cancel</button>
-    </div>
-
-    <ul class="list">
+      <button @click="handleUpdate"><i class="fas fa-check"></i></button>
+      <button @click="toggleEdit"><i class="fas fa-times"></i></button>
+    </header>
+    
+    <hr>
+    
+    <ul>
       <todo-item 
         v-for="todo in localTodos"
         v-bind:key="todo.id"
@@ -23,7 +25,7 @@
       />
     </ul>
 
-    <div class="input-bar">
+    <div class="todo-input">
       <input type="text" v-model="todoInput" />
       <button @click="addTodo">Add</button>
     </div>
@@ -92,6 +94,7 @@
           
           await this.$http.post(url, payload);
           await this.getTodos();
+          this.todoInput = '';
         } catch(e) {
           console.error(e.response.data.message);
         }
@@ -132,35 +135,60 @@
 
 <style scoped>
   .todo-list {
-    border: 1px solid black;
-    padding: 5px;
+    padding: 20px;
+    box-shadow: 2px 2px 6px 0 black;
   }
-
-  .title-bar {
+  
+  header {
     display: flex;
     align-items: center;
   }
   
-  .title-bar button {
-    height: 20px;
+  header p {
+    font-weight: bold;
+    font-size: 20px;
+    flex-grow: 1;
+    padding: 12px 6px;
   }
   
-  .edit-bar {
+  header input {
+    flex-grow: 1;
+  }
+  
+  header button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    outline: none;
+    font-size: 16px;
+  }
+  
+  ul {
+    padding: 20px 0; 
+  }
+  
+  .todo-input {
     display: flex;
-    align-items: center;
   }
   
-  .edit-bar button {
-    height: 20px;
+  .todo-input input {
+    flex-grow: 1;
+    padding: 6px 12px;
   }
   
-  .list {
-    margin: 0;
-    padding: 0;
-    list-style: none;
+  .todo-input button {
+    padding: 12px 20px;
+    background: #5bb55e;
+    border: none;
+    text-transform: uppercase;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
   }
   
-  .input-bar {
-    display: flex;
+  @media screen and (max-width: 600px) {
+    .todo-list {
+      margin: 20px;
+    }
   }
 </style>

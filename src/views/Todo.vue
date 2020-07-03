@@ -1,18 +1,21 @@
 <template>
   <div class="todo">
-    <h1>Todo Page</h1>
+    <p v-if="isEmpty" class="message">
+      You currently have no lists! Get started by pressing the add button.
+    </p>
+    <div v-else class="container">
+      <todo-list 
+        v-for="todoList in todoLists"
+        v-bind:key="todoList.id"
+        v-bind:id="todoList.id"
+        v-bind:title="todoList.title"
+        v-bind:todos="todoList.todos"
+        @update:list="updateTodoList"
+        @delete:list="deleteTodoList"
+      />
+    </div>
 
-    <todo-list 
-      v-for="todoList in todoLists"
-      v-bind:key="todoList.id"
-      v-bind:id="todoList.id"
-      v-bind:title="todoList.title"
-      v-bind:todos="todoList.todos"
-      @update:list="updateTodoList"
-      @delete:list="deleteTodoList"
-    />
-
-    <button @click="addTodoList">Add List</button>
+    <button @click="addTodoList">+</button>
   </div>
 </template>
 
@@ -29,6 +32,11 @@
         url: process.env.VUE_APP_API,
         todoLists: [],
       };
+    },
+    computed: {
+      isEmpty() {
+        return this.todoLists.length === 0;
+      }
     },
     mounted() {
       this.getTodoLists();
@@ -103,4 +111,40 @@
   };
 </script>
 
-<style scoped></style>
+<style scoped>
+  .todo {
+    width: 100%;
+  }
+
+  .container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 10px;
+  }
+  
+  .message {
+    margin: 0 auto;
+    text-align: center;
+  }
+  
+  button {
+    width: 50px;
+    height: 50px;
+    position: fixed;
+    right: 30px;
+    bottom: 20px;
+    border: none;
+    border-radius: 50%;
+    box-shadow: 2px 2px 5px 2px #919191;
+    background: #5bb55e;
+    font-size: 40px;
+    cursor: pointer;
+  }
+  
+  @media screen and (max-width: 600px) {
+    .container {
+      display: block;
+      padding: 20px 0;
+    }
+  }
+</style>

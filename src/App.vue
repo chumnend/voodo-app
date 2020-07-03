@@ -1,15 +1,15 @@
 <template>
   <div class="app">
-    <header>
-      <h1>Voodo</h1>
-      
-      <div v-if="!isAuth">
+    <header class="navbar">
+      <h1 class="navbar-brand">Voodo</h1>
+
+      <nav class="navbar-nav" v-if="!isAuth">
         <router-link to="/login">Sign In</router-link>
         <router-link to="/register">Sign Up</router-link>
-      </div>
-      <div v-else>
+      </nav>
+      <nav class="navbar-nav" v-else>
         <button v-on:click="logout">Log Out</button>
-      </div>
+      </nav>
     </header>
 
     <router-view 
@@ -29,7 +29,7 @@ export default{
     };
   },
   mounted() {
-    if(localStorage.getItem('jwt') !== null) {
+    if(window.localStorage.getItem('jwt') !== null) {
       this.isAuth = true;
     }
   },
@@ -42,11 +42,11 @@ export default{
           password
         });
         
-        localStorage.setItem('id', res.data.id);
-        localStorage.setItem('username', res.data.username);
-        localStorage.setItem('jwt', res.data.token);
+        window.localStorage.setItem('id', res.data.id);
+        window.localStorage.setItem('username', res.data.username);
+        window.localStorage.setItem('jwt', res.data.token);
         
-        if(localStorage.getItem('jwt') !== null) {
+        if(window.localStorage.getItem('jwt') !== null) {
           this.isAuth = true;
           this.$router.push('/');
         }
@@ -62,11 +62,11 @@ export default{
           password,
         });
         
-        localStorage.setItem('id', res.data.id);
-        localStorage.setItem('username', res.data.username);
-        localStorage.setItem('jwt', res.data.token);
+        window.localStorage.setItem('id', res.data.id);
+        window.localStorage.setItem('username', res.data.username);
+        window.localStorage.setItem('jwt', res.data.token);
         
-        if(localStorage.getItem('jwt') !== null) {
+        if(window.localStorage.getItem('jwt') !== null) {
           this.isAuth = true;
           this.$router.push('/');
         }
@@ -76,7 +76,7 @@ export default{
     },
     
     logout() {
-      localStorage.clear();
+      window.localStorage.clear();
       this.isAuth = false;
       this.$router.push('/login');
     },
@@ -84,4 +84,50 @@ export default{
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+  .navbar {
+    width: 100%;
+    height: 60px;
+    background: #5bb55e;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 0 10px 0 black;
+  }
+  
+  .navbar * {
+    display: inline;
+  }
+  
+  .navbar-brand {
+    margin: 0 20px;
+    padding: 0;
+  }
+  
+  .navbar-nav {
+    margin: 0 20px;
+    display: flex;
+  }
+
+  .navbar-nav a {
+    margin: 10px;
+    color: black;
+    text-decoration: none;
+    font-weight: bold;
+  }
+  
+  .navbar-nav button {
+    background: none;
+    border: none;
+    margin: 10px;
+    padding: 0;
+    font-size: 1rem;
+    font-family: sans-serif;
+    font-weight: bold;
+    cursor: pointer;
+  }
+</style>

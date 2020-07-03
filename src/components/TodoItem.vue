@@ -1,15 +1,15 @@
 <template>
   <li class="todo-item">
-    <div class="content" v-if="!editing">
-      <input type="checkbox" @click="handleToggle"/>
-      <p>{{ content }}</p>
-      <button @click="toggleEdit">Edit</button>
-      <button @click="handleDelete">Delete</button>
+    <div v-if="!editing">
+      <input type="checkbox" class="checkbox" v-model="checked" @click="handleToggle">
+      <p class="content">{{ content }}</p>
+      <button @click="toggleEdit"><i class="fas fa-edit"></i></button>
+      <button @click="handleDelete"><i class="fas fa-trash"></i></button>
     </div>
-    <div class="edit-bar" v-else>
-      <input type="text" v-model="editedContent"/>
-      <button @click="handleUpdate">Submit</button>
-      <button @click="toggleEdit">Cancel</button>
+    <div v-else>
+      <input class="text" type="text" v-model="editedContent"/>
+      <button @click="handleUpdate"><i class="fas fa-check"></i></button>
+      <button @click="toggleEdit"><i class="fas fa-times"></i></button>
     </div>
   </li>
 </template>
@@ -24,6 +24,7 @@
     },
     data() {
       return {
+        checked: this.completed,
         editedContent: '',
         editing: false,    
       };
@@ -53,21 +54,36 @@
 </script>
 
 <style scoped>
+  .todo-item {
+    width: 100%;
+  }
+
+  div {
+    display: flex;
+    align-items: center;
+  }
+  
+  .checkbox {
+    min-width: 25px;
+    min-height: 25px;
+  }
+  
   .content {
-    display: flex;
-    align-items: center;
+    padding: 6px 12px;
+    word-wrap: break-word;
+    overflow: hidden;
+    flex-grow: 1;
   }
   
-  .content button {
-    height: 20px;
+  .text {
+    flex-grow: 1;
   }
   
-  .edit-bar {
-    display: flex;
-    align-items: center;
-  }
-  
-  .edit-bar button {
-    height: 20px;
+  div button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    outline: none;
+    font-size: 16px;
   }
 </style>
