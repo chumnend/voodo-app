@@ -1,15 +1,32 @@
 <template>
   <li class="todo-item">
     <div v-if="!editing">
-      <input type="checkbox" class="checkbox" v-model="checked" @click="handleToggle">
+      <input 
+        type="checkbox" 
+        class="checkbox" 
+        v-model="checked" 
+        @click="handleToggle"
+      >
       <p class="content">{{ content }}</p>
-      <button @click="toggleEdit"><i class="fas fa-edit"></i></button>
-      <button @click="handleDelete"><i class="fas fa-trash"></i></button>
+      <button @click="toggleEdit">
+        <i class="fas fa-edit"></i>
+      </button>
+      <button @click="handleDelete">
+        <i class="fas fa-trash"></i>
+      </button>
     </div>
     <div v-else>
-      <input class="text" type="text" v-model="editedContent"/>
-      <button @click="handleUpdate"><i class="fas fa-check"></i></button>
-      <button @click="toggleEdit"><i class="fas fa-times"></i></button>
+      <input 
+        type="text" 
+        class="text" 
+        v-model="editedContent"
+      />
+      <button @click="handleUpdate" :disabled="invalidInput">
+        <i class="fas fa-check"></i>
+      </button>
+      <button @click="toggleEdit">
+        <i class="fas fa-times"></i>
+      </button>
     </div>
   </li>
 </template>
@@ -28,6 +45,13 @@
         editedContent: '',
         editing: false,    
       };
+    },
+    computed: {
+      
+      invalidInput() {
+        return this.editedContent === '';
+      }
+      
     },
     methods: {
       

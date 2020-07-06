@@ -23,11 +23,11 @@
       </div>
       
       <div class="container">
-        <button type="submit">Register</button>
+        <button type="submit" :disabled="invalidFields">Register</button>
       </div>
       
       <div class="container">
-        <a href="#">Already have an account?</a>
+        <router-link to="/login">Already have an account?</router-link>
       </div>
     </form>
   </div>
@@ -45,21 +45,21 @@
       };
     },
     computed: {
-      validate() {
-        return this.email !== '' && 
-               this.username !== '' && 
-               this.password === this.password2;
+      
+      invalidFields() {
+        return this.email === '' ||
+               this.username === '' ||
+               this.password === '' ||
+               this.password !== this.password2;
       }
+      
     },
     methods: {
+      
       handleSubmit() {
-        if(!this.validate) {
-          alert('Error');
-          return;
-        }
-        
         this.$emit('register:user', this.email, this.username, this.password);
       }
+
     }
   };
 </script>

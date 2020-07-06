@@ -15,12 +15,12 @@
       </div>
       
       <div class="container">
-        <button type="submit">Login</button>
+        <button type="submit" :disabled="invalidFields">Login</button>
       </div>
       
       <div class="container">
-        <a href="#">Forgot Username/Password?</a>
-        <a href="#">Create an account!</a>
+        <a href="#" @click="notImplemented">Forgot Username/Password?</a>
+        <router-link to="/register">Create an account!</router-link>
       </div>
     </form>
   </div>
@@ -36,19 +36,22 @@
       };
     },
     computed: {
-      validate() {
-        return this.login !== '' && this.password !== '';
+      
+      invalidFields() {
+        return this.login === '' || this.password === '';
       }
+      
     },
     methods: {
+      
       handleSubmit() {
-        if(!this.validate) {
-          alert('Error');
-          return;
-        }
-        
         this.$emit('login:user', this.login, this.password);
-      }
+      },
+      
+      notImplemented() {
+        alert('Not Yet Implemented.');
+      },
+      
     }
   };
 </script>

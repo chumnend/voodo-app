@@ -2,13 +2,21 @@
   <div class="todo-list">
     <header v-if="!editing">
       <p>{{ title }}</p>
-      <button @click="toggleEdit"><i class="fas fa-edit"></i></button>
-      <button @click="handleDelete"><i class="fas fa-trash"></i></button>
+      <button @click="toggleEdit">
+        <i class="fas fa-edit"></i>
+      </button>
+      <button @click="handleDelete">
+        <i class="fas fa-trash"></i>
+      </button>
     </header>
     <header v-else>
       <input type="text" v-model="editedTitle"/>
-      <button @click="handleUpdate"><i class="fas fa-check"></i></button>
-      <button @click="toggleEdit"><i class="fas fa-times"></i></button>
+      <button @click="handleUpdate" :disabled="invalidTitle">
+        <i class="fas fa-check"></i>
+      </button>
+      <button @click="toggleEdit">
+        <i class="fas fa-times"></i>
+      </button>
     </header>
     
     <hr>
@@ -27,7 +35,7 @@
 
     <div class="todo-input">
       <input type="text" v-model="todoInput" />
-      <button @click="addTodo">Add</button>
+      <button @click="addTodo" v-bind:disabled="invalidInput">Add</button>
     </div>
   </div>
 </template>
@@ -53,6 +61,17 @@
         todoInput: '',
         localTodos: this.todos, // local copy to prevent page reloads
       };
+    },
+    computed: {
+      
+      invalidTitle() {
+        return this.editedTitle === '';
+      },
+      
+      invalidInput() {
+        return this.todoInput === '';
+      },
+      
     },
     methods: {
 

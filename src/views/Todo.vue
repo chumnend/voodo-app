@@ -139,6 +139,7 @@
     background: #5bb55e;
     font-size: 40px;
     cursor: pointer;
+    outline: none;
   }
   
   @media screen and (max-width: 600px) {

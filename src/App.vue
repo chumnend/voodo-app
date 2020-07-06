@@ -29,8 +29,10 @@ export default{
     };
   },
   mounted() {
-    if(window.localStorage.getItem('jwt') !== null) {
+    let token = window.localStorage.getItem('jwt');
+    if(token !== null) {
       this.isAuth = true;
+      this.$http.defaults.headers.common["Authorization"] = `Bearer ${token}`;
     }
   },
   methods: {
