@@ -45,6 +45,7 @@ export default{
         window.localStorage.setItem('id', res.data.id);
         window.localStorage.setItem('username', res.data.username);
         window.localStorage.setItem('jwt', res.data.token);
+        this.$http.defaults.headers.common["Authorization"] = `Bearer ${res.data.token}`;
         
         if(window.localStorage.getItem('jwt') !== null) {
           this.isAuth = true;
@@ -65,6 +66,7 @@ export default{
         window.localStorage.setItem('id', res.data.id);
         window.localStorage.setItem('username', res.data.username);
         window.localStorage.setItem('jwt', res.data.token);
+        this.$http.defaults.headers.common["Authorization"] = `Bearer ${res.data.token}`;
         
         if(window.localStorage.getItem('jwt') !== null) {
           this.isAuth = true;
@@ -77,6 +79,7 @@ export default{
     
     logout() {
       window.localStorage.clear();
+      delete this.$http.defaults.headers.common["Authorization"];
       this.isAuth = false;
       this.$router.push('/login');
     },
