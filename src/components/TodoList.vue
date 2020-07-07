@@ -35,7 +35,14 @@
 
     <div class="todo-input">
       <input type="text" v-model="todoInput" />
-      <button @click="addTodo" v-bind:disabled="invalidInput">Add</button>
+      <button @click="addTodo" v-bind:disabled="invalidInput">
+        <div class="loader" v-if="loading">
+          <span class="block block-1"></span>
+          <span class="block block-2"></span>
+          <span class="block block-3"></span>
+        </div>
+        <span v-else>Add</span>
+      </button>
     </div>
   </div>
 </template>
@@ -60,6 +67,7 @@
         editing: false,
         todoInput: '',
         localTodos: this.todos, // local copy to prevent page reloads
+        loading: false,
       };
     },
     computed: {
@@ -90,13 +98,21 @@
       },
       
       async getTodos() {
-        let url_prefix = this.url;
-        let url_path = `/v1/list/${this.id}/todo`;
-        let userId = window.localStorage.getItem('id');
-        let url = `${url_prefix}${url_path}?userId=${userId}`;
-
-        let res = await this.$http.get(url);
-        this.localTodos = res.data;
+        try {
+          this.loading = true;
+          
+          let url_prefix = this.url;
+          let url_path = `/v1/list/${this.id}/todo`;
+          let userId = window.localStorage.getItem('id');
+          let url = `${url_prefix}${url_path}?userId=${userId}`;
+  
+          let res = await this.$http.get(url);
+          this.localTodos = res.data;
+          this.loading = false;
+        } catch(e) {
+          this.loading = false;
+          console.log(e.response.data.message);
+        }
       },
       
       async addTodo() {
@@ -196,6 +212,8 @@
   }
   
   .todo-input button {
+    width: 75px;
+    height: 42px;
     padding: 12px 20px;
     background: #5bb55e;
     border: none;
@@ -203,6 +221,42 @@
     font-size: 16px;
     font-weight: bold;
     cursor: pointer;
+  }
+
+  .loader {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .block {
+    display: inline-block;
+    background: black;
+    width: 10px;
+    height: 10px;
+    animation: loading 1.5s cubic-bezier(.8, .5, .2, 1.4) infinite;
+  }
+  
+  .block-1 {
+    animation-delay: 0.1s;
+  }
+  .block-2 {
+    animation-delay: 0.2s;
+  }
+  .block-3 {
+    animation-delay: 0.3s;
+  }
+  
+  @keyframes loading {
+    0% { 
+      opacity: 0.25;
+    }
+    50% {
+      opacity: 1;
+    }
+    100% { 
+      opacity: 0.25;
+    }
   }
   
   @media screen and (max-width: 600px) {

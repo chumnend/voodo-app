@@ -11,82 +11,90 @@
         <button v-on:click="logout">Log Out</button>
       </nav>
     </header>
-
+    
     <router-view 
       v-on:login:user="login" 
       v-on:register:user="register"
+      v-bind:loggingIn="loggingIn"
     />
   </div>
 </template>
 
 <script>
-export default{
-  name: 'app',
-  data() {
-    return {
-      isAuth: false,
-      url: process.env.VUE_APP_API,
-    };
-  },
-  mounted() {
-    let token = window.localStorage.getItem('jwt');
-    if(token !== null) {
-      this.isAuth = true;
-      this.$http.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+  export default{
+    name: 'app',
+    data() {
+      return {
+        isAuth: false,
+        url: process.env.VUE_APP_API,
+        loggingIn: false,
+      };
+    },
+    mounted() {
+      let token = window.localStorage.getItem('jwt');
+      if(token !== null) {
+        this.isAuth = true;
+        this.$http.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+      }
+    },
+    methods: {
+      async register(email, username, password) {
+        try {
+          this.loggingIn = true;
+          let res = await this.$http.post(`${this.url}/v1/auth/register`, {
+            email,
+            username,
+            password
+          });
+          
+          window.localStorage.setItem('id', res.data.id);
+          window.localStorage.setItem('username', res.data.username);
+          window.localStorage.setItem('jwt', res.data.token);
+          this.$http.defaults.headers.common["Authorization"] = `Bearer ${res.data.token}`;
+          
+          if(window.localStorage.getItem('jwt') !== null) {
+            this.isAuth = true;
+            this.$router.push('/');
+          }
+          this.loggingIn = false;
+        } catch(e) {
+          this.loggingIn = false;
+          console.error(e.response.data.message);
+        }
+      },
+      
+      async login(login, password) {
+        try {
+          this.loggingIn = true;
+          let res = await this.$http.post(`${this.url}/v1/auth/login`, {
+            login,
+            password,
+          });
+          
+          window.localStorage.setItem('id', res.data.id);
+          window.localStorage.setItem('username', res.data.username);
+          window.localStorage.setItem('jwt', res.data.token);
+          this.$http.defaults.headers.common["Authorization"] = `Bearer ${res.data.token}`;
+          
+          if(window.localStorage.getItem('jwt') !== null) {
+            this.isAuth = true;
+            this.$router.push('/');
+          }
+          this.loggingIn = false;
+        } catch(e) {
+          this.loggingIn = false;
+          console.log(e.response.data.message);
+        }
+      },
+      
+      logout() {
+        window.localStorage.clear();
+        delete this.$http.defaults.headers.common["Authorization"];
+        this.isAuth = false;
+        this.$router.push('/login');
+      },
     }
-  },
-  methods: {
-    async register(email, username, password) {
-      try {
-        let res = await this.$http.post(`${this.url}/v1/auth/register`, {
-          email,
-          username,
-          password
-        });
-        
-        window.localStorage.setItem('id', res.data.id);
-        window.localStorage.setItem('username', res.data.username);
-        window.localStorage.setItem('jwt', res.data.token);
-        this.$http.defaults.headers.common["Authorization"] = `Bearer ${res.data.token}`;
-        
-        if(window.localStorage.getItem('jwt') !== null) {
-          this.isAuth = true;
-          this.$router.push('/');
-        }
-      } catch(e) {
-        console.error(e.response.data.message);
-      }
-    },
-    
-    async login(login, password) {
-      try {
-        let res = await this.$http.post(`${this.url}/v1/auth/login`, {
-          login,
-          password,
-        });
-        
-        window.localStorage.setItem('id', res.data.id);
-        window.localStorage.setItem('username', res.data.username);
-        window.localStorage.setItem('jwt', res.data.token);
-        this.$http.defaults.headers.common["Authorization"] = `Bearer ${res.data.token}`;
-        
-        if(window.localStorage.getItem('jwt') !== null) {
-          this.isAuth = true;
-          this.$router.push('/');
-        }
-      } catch(e) {
-        console.log(e.response.data.message);
-      }
-    },
-    
-    logout() {
-      window.localStorage.clear();
-      delete this.$http.defaults.headers.common["Authorization"];
-      this.isAuth = false;
-      this.$router.push('/login');
-    },
-  }
-};
+  };
 </script>
 
 <style scoped>

@@ -1,18 +1,25 @@
 <template>
   <div class="todo">
-    <p v-if="isEmpty" class="message">
-      You currently have no lists! Get started by pressing the add button.
-    </p>
-    <div v-else class="container">
-      <todo-list 
-        v-for="todoList in todoLists"
-        v-bind:key="todoList.id"
-        v-bind:id="todoList.id"
-        v-bind:title="todoList.title"
-        v-bind:todos="todoList.todos"
-        @update:list="updateTodoList"
-        @delete:list="deleteTodoList"
-      />
+    <div class="loader" v-if="loading">
+      <span class="circle circle-1"></span>
+      <span class="circle circle-2"></span>
+      <span class="circle circle-3"></span>
+    </div>
+    <div v-else>
+      <p v-if="isEmpty" class="message">
+        You currently have no lists! Get started by pressing the add button.
+      </p>
+      <div v-else class="container">
+        <todo-list 
+          v-for="todoList in todoLists"
+          v-bind:key="todoList.id"
+          v-bind:id="todoList.id"
+          v-bind:title="todoList.title"
+          v-bind:todos="todoList.todos"
+          @update:list="updateTodoList"
+          @delete:list="deleteTodoList"
+        />
+      </div>
     </div>
 
     <button @click="addTodoList">+</button>
@@ -31,6 +38,7 @@
       return {
         url: process.env.VUE_APP_API,
         todoLists: [],
+        loading: false,
       };
     },
     computed: {
@@ -45,6 +53,8 @@
       
       async getTodoLists() {
         try {
+          this.loading = true;
+          
           let url_prefix = this.url;
           let url_path = '/v1/list';
           let userId = window.localStorage.getItem('id');
@@ -52,7 +62,9 @@
           
           let res = await this.$http.get(url);
           this.todoLists = res.data;
+          this.loading = false;
         } catch(e) {
+          this.loading = false;
           console.error(e.response.data.message);
         }
       },
@@ -140,6 +152,47 @@
     font-size: 40px;
     cursor: pointer;
     outline: none;
+  }
+
+  .loader {
+    position: relative;
+    text-align: center;
+  }
+  
+  .circle {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    margin: 0 3px;
+    background-color: black;
+    border-radius: 50%;
+    animation: loading 1.5s cubic-bezier(.8, .5, .2, 1.4) infinite;
+    transform-origin: bottom center;
+    position: relative;
+  }
+  
+  .circle-1 {
+    animation-delay: 0.1s;
+  }
+  
+  .circle-2 {
+    animation-delay: 0.3s;
+  }
+  
+  .circle-3 {
+    animation-delay: 0.5s
+  }
+  
+  @keyframes loading {
+    0%{
+      opacity: 0.5;
+    }
+    50%{
+      opacity: 1;
+    }
+    100%{
+      opacity: 0.5;
+    }
   }
   
   @media screen and (max-width: 600px) {

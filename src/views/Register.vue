@@ -23,7 +23,14 @@
       </div>
       
       <div class="container">
-        <button type="submit" :disabled="invalidFields">Register</button>
+        <button type="submit" :disabled="invalidFields">
+          <div class="loader" v-if="loggingIn">
+            <span class="circle circle-1"></span>
+            <span class="circle circle-2"></span>
+            <span class="circle circle-3"></span>
+          </div>
+          <span v-else>Login</span>
+        </button>
       </div>
       
       <div class="container">
@@ -36,6 +43,9 @@
 <script>
   export default {
     name: 'register',
+    props: {
+      loggingIn: Boolean,
+    },
     data() {
       return {
         email: '',
@@ -117,6 +127,46 @@
   .container a {
     display: block;
     margin: 6px 0;
+  }
+
+  .loader {
+    position: relative;
+  }
+  
+  .circle {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    margin: 0 3px;
+    background-color: black;
+    border-radius: 50%;
+    animation: loading 1.5s cubic-bezier(.8, .5, .2, 1.4) infinite;
+    transform-origin: bottom center;
+    position: relative;
+  }
+  
+  .circle-1 {
+    animation-delay: 0.1s;
+  }
+  
+  .circle-2 {
+    animation-delay: 0.3s;
+  }
+  
+  .circle-3 {
+    animation-delay: 0.5s
+  }
+  
+  @keyframes loading {
+    0%{
+      opacity: 0.5;
+    }
+    50%{
+      opacity: 1;
+    }
+    100%{
+      opacity: 0.5;
+    }
   }
   
   @media screen and (max-width: 600px) {
