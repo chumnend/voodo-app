@@ -29,7 +29,7 @@
             <span class="circle circle-2"></span>
             <span class="circle circle-3"></span>
           </div>
-          <span v-else>Login</span>
+          <span v-else>Register</span>
         </button>
       </div>
       
