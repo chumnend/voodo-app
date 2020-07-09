@@ -200,5 +200,9 @@
       display: block;
       padding: 20px 0;
     }
+    
+    .message {
+      padding: 30px;
+    }
   }
 </style>
