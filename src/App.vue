@@ -15,6 +15,7 @@
     <router-view 
       v-on:login:user="login" 
       v-on:register:user="register"
+      v-bind:error="error"
       v-bind:loggingIn="loggingIn"
     />
   </div>
@@ -28,6 +29,7 @@
         isAuth: false,
         url: process.env.VUE_APP_API,
         loggingIn: false,
+        error: '',
       };
     },
     mounted() {
@@ -41,6 +43,7 @@
       async register(email, username, password) {
         try {
           this.loggingIn = true;
+          this.error = '';
           let res = await this.$http.post(`${this.url}/v1/auth/register`, {
             email,
             username,
@@ -59,13 +62,14 @@
           this.loggingIn = false;
         } catch(e) {
           this.loggingIn = false;
-          console.error(e.response.data.message);
+          this.error=e.response.data.message;
         }
       },
       
       async login(login, password) {
         try {
           this.loggingIn = true;
+          this.error = '';
           let res = await this.$http.post(`${this.url}/v1/auth/login`, {
             login,
             password,
@@ -83,7 +87,7 @@
           this.loggingIn = false;
         } catch(e) {
           this.loggingIn = false;
-          console.log(e.response.data.message);
+          this.error=e.response.data.message;
         }
       },
       
@@ -101,7 +105,7 @@
   .navbar {
     width: 100%;
     height: 60px;
-    background: #5bb55e;
+    background: #8bf08e;
     position: fixed;
     top: 0;
     left: 0;

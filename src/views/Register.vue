@@ -5,6 +5,10 @@
         <h1>Let's Get Started!</h1>
       </header>
       
+      <div class="container error" v-show="error">
+        {{ error }}
+      </div>
+      
       <div class="form-group">
         <label for="email">Email</label>
         <input id="email" type="email" v-model="email" required autofocus>
@@ -45,6 +49,7 @@
     name: 'register',
     props: {
       loggingIn: Boolean,
+      error: String,
     },
     data() {
       return {
@@ -86,7 +91,7 @@
 
   .form-header {
     text-align: center;
-    background: #5bb55e;
+    background: #8bf08e;
     padding: 12px 0;
   }
   
@@ -110,7 +115,7 @@
   button {
     width: 100%;
     padding: 12px 20px;
-    background: #5bb55e;
+    background: #8bf08e;
     border: none;
     text-transform: uppercase;
     font-size: 16px;
@@ -167,6 +172,11 @@
     100%{
       opacity: 0.5;
     }
+  }
+  
+  .error {
+    color: red;
+    text-transform: capitalize;
   }
   
   @media screen and (max-width: 600px) {
