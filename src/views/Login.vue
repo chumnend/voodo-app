@@ -83,7 +83,7 @@
 
   .form-header {
     text-align: center;
-    background: #8bf08e;
+    background: #4caf50;
     padding: 12px 0;
   }
   
@@ -102,12 +102,13 @@
     margin: 8px 0;
     padding: 12px 20px;
     box-sizing: border-box;
+    font-size: 1rem;
   }
   
   button {
     width: 100%;
     padding: 12px 20px;
-    background: #8bf08e;
+    background: #4caf50;
     border: none;
     text-transform: uppercase;
     font-size: 16px;

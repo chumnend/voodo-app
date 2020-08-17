@@ -105,7 +105,7 @@
   .navbar {
     width: 100%;
     height: 60px;
-    background: #8bf08e;
+    background: #4caf50;
     position: fixed;
     top: 0;
     left: 0;

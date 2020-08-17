@@ -209,13 +209,14 @@
   .todo-input input {
     flex-grow: 1;
     padding: 6px 12px;
+    font-size: 1rem;
   }
   
   .todo-input button {
     width: 75px;
     height: 42px;
     padding: 12px 20px;
-    background: #8bf08e;
+    background: #4caf50;
     border: none;
     text-transform: uppercase;
     font-size: 16px;

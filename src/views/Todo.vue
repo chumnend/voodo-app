@@ -148,7 +148,7 @@
     border: none;
     border-radius: 50%;
     box-shadow: 2px 2px 5px 2px #919191;
-    background: #8bf08e;
+    background: #4caf50;
     font-size: 40px;
     cursor: pointer;
     outline: none;
